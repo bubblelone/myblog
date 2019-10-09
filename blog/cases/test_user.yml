@@ -1,0 +1,62 @@
+-   config:
+        name: testcase description
+        variables: {}
+-   test:
+        name: /api/v1/logintoken/
+        request:
+            headers:
+                Content-Type: application/json
+                Postman-Token: ed8cfe61-de0b-4424-ae24-0347d30e119c
+                User-Agent: PostmanRuntime/3.0.9
+            json:
+                password: admin123456
+                username: guolong
+            method: POST
+            url: http://127.0.0.1:8000/api/v1/logintoken/
+
+        extract:
+        - token: content.token
+
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - headers.Content-Type
+            - application/json
+        -   eq:
+            - content.msg
+            - login success!
+        -   eq:
+            - content.code
+            - 0
+    #    -   eq:
+     #       - content.token
+     #       - 01f8be1461d8746931f6a7f390739a6b744a7219
+        -   eq:
+            - content.username
+            - guolong
+
+-   test:
+        name: /api/v1/user/
+        request:
+            data: ''
+            headers:
+                Authorization: Token $token
+                Postman-Token: 42c920fe-63c9-402a-a2ab-1071a6a23c3d
+                User-Agent: PostmanRuntime/3.0.9
+            method: POST
+            url: http://127.0.0.1:8000/api/v1/user/
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - headers.Content-Type
+            - application/json
+        -   eq:
+            - content.code
+            - 0
+        -   eq:
+            - content.msg
+            - 身份验证通过!

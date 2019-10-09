@@ -14,8 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from .custom_site import custom_site
+from blog.views import IndexView, CategoryView, TagView, PostDetailView, \
+    demo, SearchView, LoginViewSet, IndexViewSimple, UserView, AuthorView, \
+    DemoView
+from config.views import LinkListView
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    re_path('^$', IndexView.as_view(), name='index'),
+    re_path('^category/(?P<category_id>\d+)/$', CategoryView.as_view(), name='category-list'),
+    re_path('^tag/(?P<tag_id>\d+)/$', TagView.as_view(), name='tag-list'),
+    re_path('^post/(?P<post_id>\d+).html$', PostDetailView.as_view(), name='post-detail'),
+    re_path('^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
+    re_path('^links/$', LinkListView.as_view(), name='links'),
+    re_path('^super_admin/', admin.site.urls, name='super-admin'),
+    re_path('^admin/', custom_site.urls, name='admin'),
+
+    path('demo/', demo),
+    re_path('^search/$', SearchView.as_view(), name='search'),
+    path('api/v1/logintoken/', LoginViewSet.as_view(), name='logintoken'),
+    path('api/v1/user/', UserView.as_view(), name='userauth'),
+    path('api/v1/demo/', DemoView.as_view(), name='demov'),
+    path('index/', IndexViewSimple.as_view(), name='indexsimple'),
+
+
 ]

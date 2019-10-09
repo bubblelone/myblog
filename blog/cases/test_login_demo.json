@@ -1,0 +1,64 @@
+[
+    {
+        "config": {
+            "name": "testcase description",
+            "variables": {}
+        }
+    },
+    {
+        "test": {
+            "validate": [
+                {
+                    "eq": [
+                        "status_code",
+                        200
+                    ]
+                },
+                {
+                    "eq": [
+                        "headers.Content-Type",
+                        "application/json"
+                    ]
+                },
+                {
+                    "eq": [
+                        "content.username",
+                        "guolong"
+                    ]
+                },
+                {
+                    "eq": [
+                        "content.code",
+                        0
+                    ]
+                },
+                {
+                    "eq": [
+                        "content.msg",
+                        "login success!"
+                    ]
+                },
+                {
+                    "eq": [
+                        "content.token",
+                        "01f8be1461d8746931f6a7f390739a6b744a7219"
+                    ]
+                }
+            ],
+            "request": {
+                "url": "http://127.0.0.1:8000/api/v1/logintoken/",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "User-Agent": "PostmanRuntime/3.0.9",
+                    "Postman-Token": "ed8cfe61-de0b-4424-ae24-0347d30e119c"
+                },
+                "json": {
+                    "username": "guolong",
+                    "password": "admin123456"
+                },
+                "method": "POST"
+            },
+            "name": "/api/v1/logintoken/"
+        }
+    }
+]

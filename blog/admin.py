@@ -3,11 +3,19 @@ from django.urls import reverse
 from django.utils.html import format_html
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
+from myblog.custom_site import custom_site
+from myblog.base_admin import BaseOwnerAdmin
+from django.contrib.admin.models import LogEntry
 
 # Register your models here.
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class PostInline(admin.TabularInline):
+    fields = ('title', 'desc')
+    extra = 1
+    model = Post
+
+@admin.register(Category, site=custom_site)
+class CategoryAdmin(BaseOwnerAdmin):
     list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count', 'owner')
     fields = ('name', 'status', 'is_nav')
 
@@ -20,10 +28,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
     post_count.short_description = '文章数量'
 
+    inlines = [PostInline, ]
 
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
+
+@admin.register(Tag,site=custom_site)
+class TagAdmin(BaseOwnerAdmin):
     list_display = ('name', 'status', 'created_time', 'owner')
     fields = ('name', 'status')
 
@@ -45,8 +55,8 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
             return queryset.filter(category_id=self.value())
         return queryset
 
-@admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+@admin.register(Post, site=custom_site)
+class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm
     list_display = ['title', 'category', 'status', 'created_time', 'operator', 'owner']
     list_display_links = []
@@ -59,7 +69,7 @@ class PostAdmin(admin.ModelAdmin):
 
     #编辑页面
     save_on_top = True
-    '''
+
     fields = (
         ('category', 'title'),
         'desc',
@@ -67,6 +77,7 @@ class PostAdmin(admin.ModelAdmin):
         'content',
         'tag',
     )
+
     '''
     fieldsets = (
         (
@@ -93,6 +104,7 @@ class PostAdmin(admin.ModelAdmin):
             }
         ),
     )
+    '''
 
     #filter_horizontal = ('tag', )
     filter_vertical = ('tag', )
@@ -101,7 +113,7 @@ class PostAdmin(admin.ModelAdmin):
     def operator(self, obj):
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('admin:blog_post_change', args=(obj.id,))
+            reverse('cus_admin:blog_post_change', args=(obj.id,))
         )
     operator.short_description = '操作'
 
@@ -118,3 +130,11 @@ class PostAdmin(admin.ModelAdmin):
             'all': ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css', ),
         }
         js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js', )
+
+@admin.register(LogEntry, site=custom_site)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
+
+
+
+

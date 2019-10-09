@@ -1,0 +1,56 @@
+-   config:
+        name: test_demo
+        variables: {}
+        setup_hooks:
+        - ${hook_up()}
+        teardown_hooks:
+        - ${hook_down()}
+
+-   test:
+        name: /api/v1/user/
+
+        request:
+            headers:
+
+                Postman-Token: ed8cfe61-de0b-4424-ae24-0347d30e119c
+                User-Agent: PostmanRuntime/3.0.9
+                Authorization: Token ${token()}
+
+            method: POST
+            url: http://127.0.0.1:8000/api/v1/user/
+
+
+
+        validate:
+
+         - equals: [content.code, 0]
+         - equals: [content.msg, 身份验证通过!]
+        setup_hooks:
+        - ${hook_log(----------用例1前置操作----------)}
+        teardown_hooks:
+        - ${hook_log(----------用例1后置操作---------)}
+
+-   test:
+        name: /api/v1/user/
+
+        request:
+            headers:
+
+                Postman-Token: ed8cfe61-de0b-4424-ae24-0347d30e119c
+                User-Agent: PostmanRuntime/3.0.9
+                Authorization: Token ${token()}
+
+            method: POST
+            url: http://127.0.0.1:8000/api/v1/user/
+
+
+
+        validate:
+
+         - equals: [content.code, 0]
+         - equals: [content.msg, 身份验证通过!]
+
+        setup_hooks:
+        - ${hook_log(----------用例2前置操作----------)}
+        teardown_hooks:
+        - ${hook_log(----------用例2后置操作---------)}

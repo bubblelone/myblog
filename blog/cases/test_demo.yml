@@ -1,0 +1,32 @@
+-   config:
+        name: testcase description
+        request:
+            base_url: ${ENV(host)}
+
+
+-   test:
+        name: /api/v1/logintoken/
+
+        request:
+            headers:
+
+                Postman-Token: ed8cfe61-de0b-4424-ae24-0347d30e119c
+                User-Agent: PostmanRuntime/3.0.9
+                Authorization: Token ${token()}
+
+            method: POST
+            url: /api/v1/logintoken/
+
+            json:
+                username: ${ENV(name)}
+                password: ${ENV(pwd)}
+
+
+
+        validate:
+
+         - equals: [content.code, 0]
+         - equals: [content.msg, login success!]
+
+
+
