@@ -20,6 +20,7 @@ from blog.views import IndexView, CategoryView, TagView, PostDetailView, \
     demo, SearchView, LoginViewSet, IndexViewSimple, UserView, AuthorView, \
     DemoView
 from config.views import LinkListView
+from comment.views import CommentView
 
 
 urlpatterns = [
@@ -31,6 +32,7 @@ urlpatterns = [
     re_path('^links/$', LinkListView.as_view(), name='links'),
     re_path('^super_admin/', admin.site.urls, name='super-admin'),
     re_path('^admin/', custom_site.urls, name='admin'),
+    re_path('^comment/$', CommentView.as_view(), name='comment'),
 
     path('demo/', demo),
     re_path('^search/$', SearchView.as_view(), name='search'),

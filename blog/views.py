@@ -40,7 +40,7 @@ class IndexViewSimple(ListView):
     '''
     def get_queryset(self):
         print('---这是queryset----')
-        print(Post.objects.exclude(status=Post.STATUS_NORMAL))
+        print(type(Post.objects.filter(pk=1)))
         return Post.latest_posts()
 
     def get_context_data(self, **kwargs):
