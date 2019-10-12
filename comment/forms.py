@@ -6,7 +6,7 @@ class CommentForm(forms.ModelForm):
         label = '昵称',
         max_length=50,
         widget=forms.widgets.Input(
-            attrs={'class': 'form-control', 'style': "width: 60%;"}
+            attrs={'class': 'layui-input', 'style': "width: 80%;"}
         )
     )
     email = forms.CharField(
